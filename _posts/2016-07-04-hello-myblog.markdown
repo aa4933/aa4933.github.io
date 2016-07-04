@@ -1,15 +1,13 @@
 ---
 layout:     post
-title:      "Hello 2016"
-subtitle:   " \"Hello World, Hello Blog\""
-date:       2016-07-04 07:00:00
-author:     "wulihh"
-header-img: "img/post_img/2016_07_04.jpeg"
-catalog: true
+title:      "Hello 2015"
+subtitle:   "Hello World, Hello Blog"
+date:       2015-01-29 12:00:00
+author:     "Hux"
+header-img: "img/post-bg-2015.jpg"
 tags:
-    - 生活
+    - Life
 ---
-
 > “Yeah I am coming. ”
 
 
