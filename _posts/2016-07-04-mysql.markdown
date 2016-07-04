@@ -1,0 +1,47 @@
+---
+layout:     post
+title:      "mysql错误总结"
+subtitle:   "非常容易遇到的mysql报错"
+date:       2016-07-03 12:00:00
+author:     "wulihh"
+header-img: "img/post-bg-2016-16.jpg"
+tags:
+    - mysql
+---
+> “this is pit ”
+
+
+##mysql错误总结
+
+mysql作为非常好用的数据库，被广泛使用在各种场景下，在使用的时候极容易遇到以下错误
+我将它们列出来，可供参考
+
+1.最常见42000的1064错误
+```sql
+INSERT INTO user(id,my_id,my_username,full_name,email,qq,tel,province,city,type,regtime,reg_ip,last_time,last_ip,status,inner, inner_time,verify_status,bank_status) VALUES(1,261337924,linxscn,林小松,linsir123@gmail.com, 71896532,15980924585,4|福建,60|厦门,0, 2012-03-06 13:51:14,210.13.211.218,2015-12-02 16:27:06,124.72.95.106,1,0, 0,1,9)
+```
+最常见的错误，就是这个错误，而且极其容易误以为是其他问题
+因为这个错误，误以为是其他的错误，很容易造成了很大绕圈圈问题
+
+2.最不应该出现的错误1136错误
+```sql
+Error Code: 1136. Column count doesn't match value count at row 1
+```
+这个错误是由于
+```sql
+INSERT INTO 表名(xx,xx,xx)VALUES(xx,xx,xx)
+```
+前面的表列与后面的值不匹配，很有可能是数量上的不匹配问题！
+
+3.最奇怪的错误1054错误
+
+```sql
+1054 - Unknown column 'id' in 'field list'
+```
+造成这种情况的原因，百分之96是因为不仔细，千万不能少个空格或者多个空格
+仔细校对列名情况，答案绝对是你错了！
+
+4.最有趣的错误23000错误
+
+这个错误极其罕见，可能也就是数据转移的时候会遇到，由于各种原因，当插入的表中自增长的字段已经存在的时候，你的插入是无效的，是不会插入的，所以，即使这个时候sql正确了，但是还是会报
+23000，不用担心，赶紧检查你的数据库链接是不是弄错了！
