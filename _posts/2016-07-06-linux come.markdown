@@ -6,7 +6,7 @@ date:       2016-07-04 12:00:00
 author:     "wulihh"
 header-img: "img/post-bg-2016-07_05.jpg"
 tags:
-    - mysql
+    -linux
 ---
 > “sure It is the really php ”
 
