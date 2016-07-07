@@ -17,6 +17,7 @@ mysql作为非常好用的数据库，被广泛使用在各种场景下，在使
 我将它们列出来，可供参考
 
 1.最常见42000的1064错误
+
 ``` sql
 INSERT INTO user(id,my_id,my_username,full_name,email,qq,tel,province,city,type,regtime,reg_ip,last_time,last_ip,status,inner, inner_time,verify_status,bank_status) VALUES(1,261337924,linxscn,林小松,linsir123@gmail.com, 71896532,15980924585,4|福建,60|厦门,0, 2012-03-06 13:51:14,210.13.211.218,2015-12-02 16:27:06,124.72.95.106,1,0, 0,1,9)
 ```
@@ -24,10 +25,12 @@ INSERT INTO user(id,my_id,my_username,full_name,email,qq,tel,province,city,type,
 因为这个错误，误以为是其他的错误，很容易造成了很大绕圈圈问题
 
 2.最不应该出现的错误1136错误
+
 ``` sql
 Error Code: 1136. Column count doesn't match value count at row 1
 ```
 这个错误是由于
+
 ``` sql
 INSERT INTO 表名(xx,xx,xx)VALUES(xx,xx,xx)
 ```
