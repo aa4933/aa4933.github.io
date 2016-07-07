@@ -22,7 +22,7 @@ sudo /etc/init.d/smbd restart
 在linux下快速找到某个确定的文件
 
 ``` php
-		sudo find / -name 'php.ini'  
+sudo find / -name 'php.ini'  
 ```
 快速找到php.ini
 
