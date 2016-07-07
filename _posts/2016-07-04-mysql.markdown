@@ -55,3 +55,21 @@ INSERT INTO 表名(xx,xx,xx)VALUES(xx,xx,xx)
 SQL StateHY093SQL error
 ```
 这个错误基本上不属于错误，百度或者google的时候很多人会觉得说是PDO的BUG，其实根本不是，造成这种问题的原因只有一个，你传入值的类型和sql预料的不一样
+
+6.最不常见的错误1062错误
+
+```sql
+Duplicate entry '2800' for key 'uid'
+```
+出现这个错误基本上就有两种可能一种是，数据量太大了，把暂存空间弄满了，建议关闭重新开启，或者
+
+解决方法是:修复顺坏的表
+repair table 表名;
+这样就可以了
+
+还有一种可能是
+
+```sql
+INSERT INTO `dev_mobile_test`.`user_profile`
+```
+在into后面表出现了错误，你在dev_mobile上执行上面的句子就会出现这个问题
