@@ -34,6 +34,7 @@ runtime=2s start memory=0.18MB end memory=0.18MB  MAX memory=1.1MB
 我个人是感觉自己属于比较蠢的类型，之前我在知乎上问了一个问题，就是使用select，insert方案
 
 有人已经提到了insert多个会获得数量级的提升，但是自己当时也不是很在意，然后就跌进了这个
+
 # 坑
 
 里面
