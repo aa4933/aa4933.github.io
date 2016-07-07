@@ -38,7 +38,8 @@ runtime=2s start memory=0.18MB end memory=0.18MB  MAX memory=1.1MB
 
 里面
 有图为证
-![Alt text](img/post_other_img/20160706184921.png)
+
+![Alt text](https://aa4933.github.io/img/post_other_img/20160706184921.png)
 
 为了防止跌进下一个坑，我决定好好研究这个人的评论了
 
@@ -115,5 +116,6 @@ includeClassByDir('script/');
 includeClassByDir('Common/');
 ```
 ### 后记
+
 > 经过这次的脚本编写，真的是获益良多，首先知道了自己的水平差距，其次还有10几张表在等着我去弄呢，工作繁重啊
 > 希望以后不会再遇到什么大坑了，毕竟都快哭了
