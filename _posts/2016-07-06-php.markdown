@@ -1,0 +1,110 @@
+---
+layout:     post
+title:      "php+mysql小技巧总结"
+subtitle:   "小技巧总结文章"
+date:       2016-07-06 12:00:00
+author:     "wulihh"
+header-img: "img/post-bg-2016-07_06.jpg"
+tags:
+    -php
+---
+> “world peace ”
+
+
+##php小型总结
+
+###前言
+今天写了一个数据转移脚本，之前写好的速度一直很慢，所以一直在寻求一个很快速的方式
+以下是数据对比
+之前的数据
+```php
+runtime=29s start memory=0.18MB end memory=0.18MB MAX memory=0.19MB
+```
+现在修改以后的数据
+```php
+runtime=2s start memory=0.18MB end memory=0.18MB  MAX memory=1.1MB
+```
+
+使用极小的内存代价，获取数量级的提升
+
+>一切都要归功于insert(),(),(),(),(),()...替代insert()
+
+我个人是感觉自己属于比较蠢的类型，之前我在知乎上问了一个问题，就是使用select，insert方案
+
+有人已经提到了insert多个会获得数量级的提升，但是自己当时也不是很在意，然后就跌进了这个
+#坑
+
+里面
+有图为证
+![Alt text](./QQ截图20160706184921.png)
+
+为了防止跌进下一个坑，我决定好好研究这个人的评论了
+
+###技巧总结
+ + 1.使用字符串匹配作为替代循环遍历的方式
+```sql
+SQL: select * from table where id IN (3,6,9,1,2,5,8,7); 
+```
+ + 2.使用直接获取最大id来替代手动填写
+```sql
+SELECT * from tb where id = (SELECT max(id) FROM tb);
+```
+ + 3.可以使用回调函数来数组拼装字符串
+```php
+向用户自定义函数发送数组中的值，并返回一个字符串：
+<?php
+function myfunction($v1,$v2)
+{
+return $v1 . "-" . $v2;
+}
+$a=array("Dog","Cat","Horse");
+print_r(array_reduce($a,"myfunction"));
+?>
+```
++ 4.使用自带函数substr直接截取最后一个字符/strlen获取字符串最大长度
+```php
+$str = "1,2,3,4,5,6,"; 
+$newstr = substr($str,0,-1); 
+echo $newstr; 
+//echo 1,2,3,4,5,6
+```
++  5.使用函数获取最后一个字符
+```php
+<?php
+得到PHP中最后一个字符
+
+$str = " JhlIsHero ";
+$var = trim($str);
+$len = strlen($var)-1;
+echo $var{$len};
+?>
+```
++  6.填写自动加载文件
+```php
+function __autoload($class_name) { 
+$path = str_replace('_', '/', $class_name); 
+require_once $path . '.php'; 
+} 
+// 这里会自动加载Http/File/Interface.php 文件 
+$a = new Http_File_Interface(); 
+```
++  7.使用函数获取某一个文件夹内所有文件
+```php
+function includeClassByDir($dir)
+{
+	if (file_exists($dir) && is_dir($dir)) {
+		$files = glob($dir ."*.php");
+
+		///
+		foreach ($files as $file) {
+			include_once($file);
+		}
+	}
+}
+//引入对应文件
+includeClassByDir('script/');
+includeClassByDir('Common/');
+```
+###后记
+>经过这次的脚本编写，真的是获益良多，首先知道了自己的水平差距，其次还有10几张表在等着我去弄呢，工作繁重啊
+>希望以后不会再遇到什么大坑了，毕竟都快哭了
