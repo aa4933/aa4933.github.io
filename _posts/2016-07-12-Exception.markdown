@@ -83,8 +83,9 @@ destination表示目的地，即存放的文件或远程目的地
 ```php
 error_log("$error_info",3,"errors.txt");
 ```
+
 #### 二、PHP异常处理【重点】
- 
+
 * 1、基本语法
 
 ```php
