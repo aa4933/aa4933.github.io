@@ -1,15 +1,14 @@
 ---
 layout:     post
-title:      "php各类异常的处理"
+title:      "异常处理文章"
 subtitle:   "小技巧总结文章"
-date:       2016-07-12 12:00:00
+date:       2016-07-08 12:00:00
 author:     "wulihh"
 header-img: "img/post-bg-2016-07_08.jpg"
 tags:
-    -php
+    - php
 ---
-> “Exception”
-
+> “Exception ”
 
 ## 关于异常处理
 
