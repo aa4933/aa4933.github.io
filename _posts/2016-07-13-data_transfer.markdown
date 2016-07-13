@@ -18,7 +18,7 @@ tags:
 在数据迁移过程中，我们会遇到一种数据库设计失误的情况，之前考虑不周到引起的，旧表数据字段没有存储关联子表的主键
 导致无法快速定位数据的情况，我采用了一种叫做复合迁移多重匹配的方法进行定位
 
-```mysql
+``` mysql
 旧claim+user+app_version+app_project=新app_claim
 ```
 
@@ -44,7 +44,8 @@ tags:
 #### 代码
 
 main--run方法
-```php
+
+``` php
 //由于此表转移需要获取app_project表的多条信息
 list($res_g,$game_ids)=self::get_old_other_Data_2($this->db_m,'app_project','package_name,id','('.$name.')');
 //切割特殊的game_ids
@@ -56,7 +57,8 @@ $sql = $this->get_sql($res_c, $res_u,$res_g,$res_v);
 ```
 
 get_old_other_Data_3方法
-```php
+
+``` php
 public function get_old_other_Data_3($db,$table,$information,$oldIDs,$version){
         $list=array();
         $sql = sprintf("SELECT %s FROM `%s` WHERE pid IN %s AND version_name IN %s;",$information,$table,$oldIDs,$version);
@@ -71,7 +73,8 @@ public function get_old_other_Data_3($db,$table,$information,$oldIDs,$version){
 ```
 
 get_sql方法
-```php
+
+``` php
 public function get_sql($res_c,$res_u,$res_g,$res_v){
         $sql='INSERT INTO
             app_claim
@@ -113,7 +116,7 @@ public function get_sql($res_c,$res_u,$res_g,$res_v){
     }
 ```
 
-###后记
+### 后记
 
 >数据迁移过程中遇到的各种事情多而不绝，需要多总结，多思考，防止以后出现类似的错误
  
