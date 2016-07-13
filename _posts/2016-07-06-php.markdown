@@ -117,6 +117,38 @@ includeClassByDir('script/');
 includeClassByDir('Common/');
 ```
 
+* 8.js与php的数字与中文校验
+
+``` php
+//中文校验
+if (preg_match("/^[\x7f-\xff]+$/", $str)) { //兼容gb2312,utf-8
+echo "正确输入";
+} else {
+echo "错误输入";
+}
+
+var str = "1221我3443";
+var str2 = "23433234";
+var reg = /[\u4e00-\u9fa5]/g;
+if(reg.test(str)){
+    alert("有中文");
+}else{
+    alert("无中文");
+}
+```
+
+``` php
+//数字校验
+is_numeric( 'abcd123' ) or die('提供的参数不是数字');
+
+if(!isNaN(val)){
+   alert("是数字");
+}else{
+   alert("不是数字");
+}
+```
+
+
 ### 后记
 
 > 经过这次的脚本编写，真的是获益良多，首先知道了自己的水平差距，其次还有10几张表在等着我去弄呢，工作繁重啊
