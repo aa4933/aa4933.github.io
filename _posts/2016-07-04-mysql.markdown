@@ -6,7 +6,7 @@ date:       2016-07-03 12:00:00
 author:     "wulihh"
 header-img: "img/post-bg-2016-16.jpg"
 tags:
-    - mysql
+    - Mysql
 ---
 > “this is pit ”
 
@@ -23,6 +23,9 @@ INSERT INTO user(id,my_id,my_username,full_name,email,qq,tel,province,city,type,
 ```
 最常见的错误，就是这个错误，而且极其容易误以为是其他问题
 因为这个错误，误以为是其他的错误，很容易造成了很大绕圈圈问题
+《1》把不存在的字段误以为存在
+《2》要插入的值写多了
+《3》字段名字占用了mysql官方的语法命名
 
 2.最不应该出现的错误1136错误
 
