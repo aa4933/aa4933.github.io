@@ -77,6 +77,7 @@ The Audit QQ group number is encrypted with the **RSA Public Key**.
 然后我写了一个脚本
 
 node.js版
+
 ``` javascript
 for(var i=999;i<10000;i++){
 	var n=233*i;
@@ -87,6 +88,7 @@ for(var i=999;i<10000;i++){
 ```
 
 php版
+
 ``` php
 for($i=999;$i<10000;$i++){
 	$n=233*$i;
@@ -130,6 +132,7 @@ OK，然后从题目我们可以知道
 C语言版
 
 原版，可交互模式
+
 ``` cpp
 //
 // Created by 4399-4928 on 2016/7/29.
@@ -195,8 +198,10 @@ void main(){
 }
 
 ```
+
 因为不是经常做C开发，临时下载了一个CLion来写，然后不会用.....竟然不知道怎么Run起来
 然后我就对代码做了修改直接就是可以print信息的
+
 
 ``` cpp
 // Created by 4399-4928 on 2016/7/29.
@@ -249,11 +254,12 @@ void main(){
 ```
 
 google+百度了一下，就懒得修改之前写的了，然后采用了好多现成的RSA实现版本
-[C语言版](http://blog.sina.com.cn/s/blog_7d49c18001015ucc.html)
-[php版](http://blog.csdn.net/ofengyizu/article/details/45369261)
-[python(1)版](http://www.liaoxuefeng.com/article/00137389255913089a316bc2ccb48d3b2323759fecd4cf8000)
-[python(2)版](http://www.cnblogs.com/7hat/p/3407897.html)
-[javaScript版](http://www.ohdave.com/rsa/)
+
+* [C语言版](http://blog.sina.com.cn/s/blog_7d49c18001015ucc.html)
+* [php版](http://blog.csdn.net/ofengyizu/article/details/45369261)
+* [python(1)版](http://www.liaoxuefeng.com/article/00137389255913089a316bc2ccb48d3b2323759fecd4cf8000)
+* [python(2)版](http://www.cnblogs.com/7hat/p/3407897.html)
+* [javaScript版](http://www.ohdave.com/rsa/)
 
 像PHP版本解密用的是PHP自带的拓展库，廖雪峰老师的Python使用的是数组的形式传递，由于python技术有限，只能看懂一部分，难以修改，最后选择了python的第二个版本，比较容易理解，然后对其进行修改
 
@@ -326,7 +332,7 @@ M2 = decryption(333079, d, n)
 print "%d%d"%(M1,M2)
 ```
 
-然后得出结果了![Alt text](https://aa4933.github.io/img/post_other_img/post_07_13.png/20160729183748.png)
+然后得出结果了![Alt text](https://aa4933.github.io/img/post_other_img/20160729183748.png)
 
 然后就到了一个验证群，但是验证码又是一个问题
 
