@@ -1,0 +1,377 @@
+---
+layout:     post
+title:      "有趣的相亲题目"
+subtitle:   "知识集合"
+date:       2016-07-29 18:50:00
+author:     "wulihh"
+header-img: "img/post-bg-2016-07_09.jpg"
+tags:
+    - PHP
+---
+> “Problem”
+
+### 一道非常有意思的相亲题目
+
+[知乎上的提问](http://www.zhihu.com/question/26598476/answer/45396765)
+
+听说解出这道题目就能加群找真爱，哈哈哈哈
+
+反正我是被吓到了
+
+然后我好奇进去了
+
+[题目](https://gist.github.com/zealic/38510fd8ecd1be75924a#file-email)
+
+听说要翻墙才能进，不过这对于技术宅应该都是小问题
+
+``` php
+begin 777 portal.bin
+M(R!796QC;VUE#0H-"B,C($ME>0T*#0I24T$@4'5B;&EC($ME>3H@*$XL(#<I
+M#0I.(#T@,C,S("H@30T*32!I<R!T:&4@9W)E871E<W0@9F]U<BUD:6=I="!P
+M<FEM92!T:&%T(&UA:V5S($X@96YD('=I=&@@,C,S#0H-"B,C($5N8W)Y<'1E
+M9"!!=61I="!142!G<F]U<"!N=6UB97(-"@T*5&AE($%U9&ET(%%1(&=R;W5P
+M(&YU;6)E<B!I<R!E;F-R>7!T960@=VET:"!T:&4@*BI24T$@4'5B;&EC($ME
+M>2HJ+@T*#0I@8&`-"D-/3D-!5"A$14-265!4*#$Y-S,W,BDN=&]3=')I;F<H
+M*2P@1$5#4EE05"@S,S,P-SDI+G1O4W1R:6YG*"DI#0I@8&`-"@T*(R!#05!4
+M0TA!#0I5<V4@=&AI<R!G:7-T(')E=FES:6]N(&`W9#(S939E.3DY-&)B-F9A
+M93@W-&1A8C,U930V9F0W-6(Y9&0Q-6)E8"!R97-U;'0@87,@0T%05$-(02X-
+!"@``
+`
+end
+```
+
+上面是题目原型，我勒个去，神马鬼啊，我一看到反正是被吓傻了，莫慌，咱们找找规律
+
+先探探这个是啥语言
+
+begin开头
+每段开头为M
+end结尾
+
+google一下
+
+原来是UUENCODE，我勒个去
+
+这个时候我们需要万能的Google，[解码UUENCODE](http://uuencode.online-domain-tools.com/)
+
+>切记不要使用百度，使用百度搜索的结果会让你大开眼界
+
+#### 题目的第一个问题
+``` php
+# Welcome
+
+## Key
+
+RSA Public Key: (N, 7)
+N = 233 * M
+M is the greatest four-digit prime that makes N end with 233
+
+## Encrypted Audit QQ group number
+
+The Audit QQ group number is encrypted with the **RSA Public Key**.
+```
+* 第一步解出M
+
+翻译：M是使尾数为233的N的最大四位数
+
+然后我写了一个脚本
+
+node.js版
+``` javascript
+for(var i=999;i<10000;i++){
+	var n=233*i;
+	if(n%1000===233){
+		console.log(i);
+	}
+}
+```
+
+php版
+``` php
+for($i=999;$i<10000;$i++){
+	$n=233*$i;
+	if ($n%1000==233) {
+		var_dump($i);
+	}
+}
+```
+
+得出M是9001，N是2097233
+
+* 第二个问题解出RSA
+
+RSA算法是仨老外提出的，以难以破解著称
+
+这个算法有几个重点
+
+* 欧拉数
+* 公钥
+* 私钥
+* 加密
+* 解密
+
+首先，给出两个素数，相乘得到n
+各自减1得到欧拉数
+给出公钥
+公钥+欧拉数->私钥
+
+加密:需要给出需要加密的明文+公钥+n
+解密:需要给出需要解密的密文+私钥+n
+
+OK，然后从题目我们可以知道
+两个素数：233，9001
+需要解密的密文：197372，333079
+公钥：7
+
+这里就比较抓狂了，我们需要写好的RSA算法实现
+
+我先是采用自己编写的RSA算法实现
+
+C语言版
+
+原版，可交互模式
+``` cpp
+//
+// Created by 4399-4928 on 2016/7/29.
+//
+#include <stdio.h>
+
+int candp(int a,int b,int c){
+    int r=1;
+    b=b+1;
+    while(b!=1){
+        r=r*a;
+        r=r%c;
+        b--;
+    }
+    printf("%d\n",r);
+    return r;
+}
+
+int func(int x,int y){
+    int t;
+    while (y){
+        t=x;
+        x=y;
+        y=t%y;
+    }
+    if(x==1)
+        return 0;
+    else
+        return 1;
+}
+
+void main(){
+    int p,q,e,d,m,n,t,c,r;
+    printf("请输入两个素数p,q:");
+    scanf("%d%d",&p,&q);
+    n=p*q;
+    printf("计算得n为%3d\n",n);
+    t=(p-1)*(q-1);
+    printf("计算得t为%3d\n",t);
+    printf("请输入公钥:");
+    scanf("%d",&e);
+    if(e<1||e>t||fun(e,t)){
+        print("e不符合要求");
+        scanf("%d",&e);
+    }
+    d=1;
+    while(((e*d)%t)!=1) d++;
+    printf("经计算d为%d\n",d);
+    printf("加密请输入 1\n");
+    printf("解密请输入 2\n");
+    scanf("%d",&r);
+    switch (r){
+        case 1:printf("请输入明文");
+            scanf("%d",&m);
+            c=candp(m,e,n);
+            printf("密文为%d\n",c);break;
+        case 2:printf("请输入密文");
+            scanf("%d",&c);
+            m=candp(c,d,n);
+            printf("明文为%d\n",m);break;
+
+    }
+}
+
+```
+因为不是经常做C开发，临时下载了一个CLion来写，然后不会用.....竟然不知道怎么Run起来
+然后我就对代码做了修改直接就是可以print信息的
+
+``` cpp
+// Created by 4399-4928 on 2016/7/29.
+//
+#include <stdio.h>
+
+int candp(int a,int b,int c){
+    int r=1;
+    b=b+1;
+    while(b!=1){
+        r=r*a;
+        r=r%c;
+        b--;
+    }
+    printf("%d\n",r);
+    return r;
+}
+
+int func(int x,int y){
+    int t;
+    while (y){
+        t=x;
+        x=y;
+        y=t%y;
+    }
+    if(x==1)
+        return 0;
+    else
+        return 1;
+}
+
+void main(){
+    int d,n,t,m;
+    d=1;
+    n=233*9001;
+    t=(233-1)*(9001-1);
+    while(((7*d)%t)!=1) d++;
+    printf("经计算d为%d\n",d);
+    m=candp(333079,d,n);
+    printf("明文为%d\n",m);
+}
+```
+
+跑了一下莫名奇妙的结果
+
+``` javascript
+经计算d为1193143
+-1984460
+明文为-1984460
+```
+
+google+百度了一下，就懒得修改之前写的了，然后采用了好多现成的RSA实现版本
+[C语言版](http://blog.sina.com.cn/s/blog_7d49c18001015ucc.html)
+[php版](http://blog.csdn.net/ofengyizu/article/details/45369261)
+[python(1)版](http://www.liaoxuefeng.com/article/00137389255913089a316bc2ccb48d3b2323759fecd4cf8000)
+[python(2)版](http://www.cnblogs.com/7hat/p/3407897.html)
+[javaScript版](http://www.ohdave.com/rsa/)
+
+像PHP版本解密用的是PHP自带的拓展库，廖雪峰老师的Python使用的是数组的形式传递，由于python技术有限，只能看懂一部分，难以修改，最后选择了python的第二个版本，比较容易理解，然后对其进行修改
+
+``` javascript
+import random
+
+def fastExpMod(b, e, m):
+    result = 1
+    while e != 0:
+        if (e&1) == 1:
+            # ei = 1, then mul
+            result = (result * b) % m
+        e >>= 1
+        # b, b^2, b^4, b^8, ... , b^(2^n)
+        b = (b*b) % m
+    return result
+
+def extendedGCD(a, b):
+    #a*xi + b*yi = ri
+    if b == 0:
+        return (1, 0, a)
+    #a*x1 + b*y1 = a
+    x1 = 1
+    y1 = 0
+    #a*x2 + b*y2 = b
+    x2 = 0
+    y2 = 1
+    while b != 0:
+        q = a / b
+        #ri = r(i-2) % r(i-1)
+        r = a % b
+        a = b
+        b = r
+        #xi = x(i-2) - q*x(i-1)
+        x = x1 - q*x2
+        x1 = x2
+        x2 = x
+        #yi = y(i-2) - q*y(i-1)
+        y = y1 - q*y2
+        y1 = y2
+        y2 = y
+    return(x1, y1, a)
+
+def computeD(fn, e):
+    (x, y, r) = extendedGCD(fn, e)
+    #y maybe < 0, so convert it 
+    if y < 0:
+        return fn + y
+    return y
+
+def keyGeneration():
+    p = 233
+    q = 9001
+    n = p * q
+    fn = (p-1) * (q-1)
+    e = 7
+    d = computeD(fn, e)
+    return (n, e, d)
+
+def decryption(C, d, n):
+    #RSA M = C^d mod n
+    return fastExpMod(C, d, n)
+
+
+#Unit Testing
+(n, e, d) = keyGeneration()
+
+M1 = decryption(197372, d, n)
+M2 = decryption(333079, d, n)
+print "%d%d"%(M1,M2)
+```
+
+然后得出结果了![Alt text](https://aa4933.github.io/img/post_other_img/post_07_13.png/20160729183748.png)
+
+然后就到了一个验证群，但是验证码又是一个问题
+
+#### 题目中的第二个问题
+
+``` json
+ # CAPTCHA
+    Use this gist revision `7d23e6e9994bb6fae874dab35e46fd75b9dd15be` result as CAPTCHA.
+```
+
+看英文的意思就是把gist的log调用出来然后reset回去吧
+
+这一步不难，只要对git稍微有点熟悉的人都会明白
+
+再然后就得到了`Roman Hitman`
+
+然后加群+验证码，就过了，进群以后各种狂风暴雨
+
+要你回答什么3问，什么奇奇怪怪的喜好等等，然后我看
+
+到了好多程序猿的自曝照片，把我幼小的心灵吓坏了，
+
+然后我就退群了......
+
+#### 小插曲
+
+我闲着无聊把`Roman Hitman`放在github里面搜索，发
+
+现了一个[奇怪的开源项目](https://github.com/ox0spy/RomanHitman)
+
+然后我就进去看了一下源码，发现是这个题目的答案......
+
+由于我的python都是临时装的，pip包管理器莫名其妙遇
+
+到了没有权限的问题，可能是windows下的问题，我暂
+
+时也没办法解决所以我也没跑这个项目，感兴趣的人可
+
+以Run试试
+
+#### 后记
+
+这道题目还是很有意思的，涉及到的知识点有
+
+* uuencode
+* RSA算法
+* Git
+* 任意语言的编程能力
