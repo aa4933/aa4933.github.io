@@ -137,6 +137,50 @@ if(reg.test(str)){
 }
 ```
 
+* 9.PHP对象转数组
+
+``` php
+get_object_vars()
+//切记这个只能转化一维数组，多维数组需要遍历，而且只能转化对象的属性，不能转化方法
+```
+
+* 10.关于PHP异步
+
+``` php
+curl可以实现PHP的异步操作，由于curl是一个独立的进程的一部分，不会阻塞socket
+<?php
+private function request($url, $payload) {
+ 
+  $cmd = "curl -X POST -H 'Content-Type: application/json'";
+  $cmd.= " -d '" . $payload . "' " . "'" . $url . "'";
+ 
+  if (!$this->debug()) {
+    $cmd .= " > /dev/null 2>&1 &";
+  }
+ 
+  exec($cmd, $output, $exit);
+  return $exit == 0;
+}
+?>
+听说鸟哥的博客说curl必须等待一秒钟
+$ch = curl_init();
+ 
+$curl_opt = array(CURLOPT_URL, 'http://www.example.com/backend.php',
+                            CURLOPT_RETURNTRANSFER, 1,
+                            CURLOPT_TIMEOUT, 1,);
+ 
+curl_setopt_array($ch, $curl_opt);
+ 
+curl_exec($ch);
+ 
+curl_close($ch);
+后来我想到可以设置
+CURLOPT_TIMEOUT_MS 设置成微秒级别
+后来去翻了一下文档，发现有下面几句话
+设置cURL允许执行的最长毫秒数。 
+//如果 libcurl 编译时使用系统标准的名称解析器（ standard system name resolver），那部分的连接仍旧使用以秒计的超时解决方案，最小超时时间还是一秒钟。
+```
+
 ``` php
 //数字校验
 is_numeric( 'abcd123' ) or die('提供的参数不是数字');
