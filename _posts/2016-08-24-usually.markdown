@@ -1,0 +1,50 @@
+---
+layout:     post
+title:      "最近经常用的特别好用的东西"
+subtitle:   "知识集合"
+date:       2016-08-24 18:50:00
+author:     "wulihh"
+header-img: "img/post-bg-2016-07_09.jpg"
+tags:
+    - PHP
+---
+> “yes,maybe be important”
+
+##### 关于PHP的
+
+* PHP glob() 函数
+
+可以快速把某一个文件夹里面的所有文件遍历一遍，超好用，谁用谁知道
+
+``` php
+$uploaddir='/php/xxx/'
+glob($uploaddir.'*.php');
+```
+
+* PHP array_map() 函数
+
+可以快速的把数组中的每一个元素执行相同的方法
+非常重要的一点，也可以使用类方法
+
+``` php
+array_map('方法名',$array);
+返回：过滤后的数组
+
+如果需要调用类方法
+array_map(['/App/Helper/类名','方法名'],$array);
+
+类名前面的是应对namespace的情况
+```
+
+##### 关于html5的
+
+* 表单快速判断
+
+``` javascript
+<input id="text" pattern="^1[3-9]\d{9}$" required />
+pattern:可以传入筛选正则
+required:可以限制非空
+```
+
+* html5上传功能（包含校验）
+[github](https://github.com/aa4933/wuhUpload)
