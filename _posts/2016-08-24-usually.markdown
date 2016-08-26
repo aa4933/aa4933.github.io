@@ -36,6 +36,13 @@ array_map(['/App/Helper/类名','方法名'],$array);
 类名前面的是应对namespace的情况
 ```
 
+* PHP mkdir() 函数
+
+``` php
+$mode:权限 $path:路径
+mkdir($path,$mode,true); //第三个参数为true即可以创建多极目录
+```
+
 ##### 关于html5的
 
 * 表单快速判断
