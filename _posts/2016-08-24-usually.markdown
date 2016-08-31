@@ -43,6 +43,29 @@ $mode:权限 $path:路径
 mkdir($path,$mode,true); //第三个参数为true即可以创建多极目录
 ```
 
+* PHP strtotime()函数
+
+``` php
+strtotime(date('Y-m-d H:i:s'))
+把正常时间转换为unix时间戳
+```
+
+* PHP unset()与array_splice
+
+``` php
+两个都用于删除数组特定的对象
+unset不会改变索引值
+array_splice会改变索引值
+```
+
+* PHP pdo
+
+``` php
+$rs=$db->query('SELECT * FROM user');
+$res=$rs->fetchAll();
+这是PDO原生的数组取法，如果框架无法满足条件，请记得使用
+```
+
 ##### 关于html5的
 
 * 表单快速判断
@@ -55,3 +78,12 @@ required:可以限制非空
 
 * html5上传功能（包含校验）
 [github](https://github.com/aa4933/wuhUpload)
+
+##### 关于mysql的
+
+* 基本的查询顺序
+
+``` php
+SELECT * FROM user WHERE id='1' AND 'name' LIKE 'xxx' LIMIT 0,10;
+ALTER TABLE `user` ADD 'name' varchar(15) NOT NULL DEFAULT 'xx' COMMENT '这个是名字'
+```
