@@ -81,6 +81,8 @@ mkdir($path,$mode,true); //第三个参数为true即可以创建多极目录
 ``` php
 strtotime(date('Y-m-d H:i:s'))
 把正常时间转换为unix时间戳
+date('Y-m-d', strtotime('-6 days'))
+还可以直接使用然后对其进行过去几天的数据获取
 ```
 
 * PHP unset()与array_splice

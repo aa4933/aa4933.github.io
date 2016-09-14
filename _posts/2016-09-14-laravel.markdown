@@ -1,0 +1,68 @@
+---
+layout:     post
+title:      "优雅的web艺术家"
+subtitle:   "Laravel"
+date:       2016-09-14 15:50:00
+author:     "wulihh"
+header-img: "img/post-bg-2016-07_09.jpg"
+tags:
+    - PHP
+---
+> 'Smile, breathe, and go slowly. - Thich Nhat Hanh'
+
+##### 这也许是非常有意思的框架
+
+Laravel作为一个php框架，推广水平非常好
+
+从github的star量就可以看出，这个框架有多可怕
+
+相对于工作使用的框架，yii2和laravel相对来说过于臃肿，有时候出现问题
+
+百度+google效率>>>研读框架源码
+
+毕竟用的人多，好处也挺多
+
+##### 关于使用
+
+本着可能使用laravel构筑一个api项目的思路，我稍微使用了一下
+
+还记得知乎上面有个人问：laravel到底哪里优雅
+
+其实优雅这词每个人理解都不一样
+
+有些人说，它的路由设计，有一些人说，他的服务器容器设计
+
+还有的人说.....
+
+##### 关于有一些设计
+
+* php dotenv
+
+框架采用了.env环境变量的设计
+
+把所有config的配置全部加载进来，进行使用
+
+``` php
+
+		'mysql' => [
+			'driver'    => 'mysql',
+			'host'      => env('DB_HOST', '192.168.50.211'),
+			'database'  => env('DB_DATABASE', 'dev_mobile_2.0_test'),
+			'username'  => env('DB_USERNAME', 'linxs'),
+			'password'  => env('DB_PASSWORD', '123456'),
+			'charset'   => 'utf8',
+			'collation' => 'utf8_unicode_ci',
+			'prefix'    => '',
+			'strict'    => false,
+		],
+```
+
+所以你会看到配置database的时候出现的`env`
+
+如果添加，会出现使用根路径下`.env`的情况
+
+然后就会造成mysql史上最不可能出现的错误：1045!
+
+* Artisan 命令行工具
+
+未完待续....
