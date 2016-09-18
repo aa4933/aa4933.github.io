@@ -16,6 +16,10 @@ tags:
 
 可以将数组的KEY拿来进行排序，适合组装型数组使用
 
+* PHP continue 
+
+continue也可以用来跳出二维数组，只需要在后面带上`2`即可
+
 
 * PHP array_slice() 函数
 
