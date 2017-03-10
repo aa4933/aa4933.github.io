@@ -1,0 +1,189 @@
+---
+layout:     post
+title:      "laravel笔记"
+subtitle:   "laravel"
+date:       2017-02-22 09:22:00
+author:     "wuilly"
+header-img: "img/post-bg-2016-07_09.jpg"
+tags:
+    - laravel
+---
+> 'About laravel'
+
+### laravel中拥有一个很强大的功能叫做`migrations`
+
+这个功能更加类似于版本控制器关于数据库的，可以做到与项目类似的版本控制的效果，以达到团队合作更加便捷的目的
+
+创建`migration`
+
+``` php
+php artisan make:migration create_table_table1 
+```
+
+migration可编辑目录在database中，然后up方法是执行
+
+
+------------------------------------------------------------------------
+(在这里遇到了一个执行问题
+
+``` php
+[PDOException]                                    
+  SQLSTATE[HY000] [2002] No such file or directory )
+```
+
+
+解决方案如下《错误环境：Mac OS 10.10
+
+找到mysql.sock文件的位置
+
+``` php
+$sudo find / -name mysql.sock
+
+
+------结果如下----------
+find: /dev/fd/3: Not a directory
+find: /dev/fd/4: Not a directory
+/private/tmp/mysql.sock
+
+检查/var/mysql是否存在
+$ll /var/mysql
+
+如果/var/mysql不存在则创建
+$sudo mkdir /var/mysql
+
+将mysql.sock文件映射到/var/mysql路径中
+$sudo ln -s /private/tmp/mysql.sock  /var/mysql/mysql.sock
+
+```
+
+重新刷新错误页面......
+---------------------------------------------------------------------------
+
+
+`php artisan migrate`
+
+down方法是执行
+
+`php artisan migrate:rollback`
+
+---------------------------------------------------------------------------
+
+这里又遇到了一个问题就是 《
+`[Symfony\Component\Debug\Exception\FatalErrorException]  
+  Class 'CreateTableTable1' not found` 
+   》
+
+解决方案如下
+
+使用composer
+	`composer dump-autoload`
+如果是非全局，则用php驱动
+ 	`php  composer.phar dump-autoload`
+
+
+---------------------------------------------------------------------------
+
+`php artisan migrate --pretend`
+
+
+可以打印up方法执行的sql语句
+
+
+### 一般建表的快速语句
+
+``` php
+php artisan make:migration create_table_users --create=users
+
+```
+
+### laravel的路由
+
+``` php
+Route::get('/', function () {
+    return view('welcome');
+});
+
+
+Route::any('api',function (){
+    return ['version'=>'0.1'];
+});
+```
+
+### laravel的调试方法
+
+``` php
+dd(Request::all());
+获取用户发送的所有信息
+
+dd(Request::has('usernam'));
+获取用户发送的数据是否存在某个字段信息
+
+
+dd(Request::get('username'));
+获取用户发送的某个数据，如果存在，则返回值，没有则回空
+```
+
+### laravel的session机制
+
+``` php
+
+session('xxx','xxx1');
+查询xxx的session信息,不存在返回xxx1
+
+session()->put('xx','xxx')
+把xx里面存入xxx
+
+session()->all()
+获取所有session
+
+session()->pull('username')
+session()->forget('username')
+session()->put('username',null)
+拉出某一个属性，即销毁
+
+session()->set('user.name.age','123');
+设置多级对象值
+
+return redirect('/');
+
+```
+
+
+## 遇到一个巨坑的问题
+
+### 关于中间件
+
+laravel为了区分web请求与api或者其他类型的请求，特别设立了中间件，做出不同的选择配置
+
+我用的版本是5.2.15
+
+而在5.2.26以后的版本下，laravel会自动手动载入web中间件
+
+我的版本下，需要手动载入，所以我出现了session无法使用的问题，而教程使用的是5.2.31，已经自动载入了，所以他们是正常的
+
+当然了，这个问题其实解决并不是很难，把路由塞到
+
+``` php
+Route::group(['middleware' => ['web']], function () {})
+```
+
+这个方法里面就行了，但是我们还是出现了喜闻乐见的
+
+`wrong`
+
+没打开调试模式还以为是自己错了，打开调试模式(`app.php`设置)以后
+
+发现原来是`No supported encrypter found`
+
+解决方案是
+
+``` php
+终端使用如下命令： php artisan key:generate 将生成的key复制到config/app.php替换82行的APP_KEY键值。 
+```
+
+然后问题就解决了，这教导我们，凡是别想当然，别觉得就是这个不对
+
+我就是陷入了就觉得自己的想法不对的漩涡中，实际上其实是另一个问题
+
+
+
