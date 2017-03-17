@@ -17,7 +17,7 @@ tags:
 
 但是效果很好，所以很容易遗忘，所以写一个技巧记录下来，以便于下次翻阅
 
-
+`https://packagecontrol.io/`
 
 ## 关于vim
 
