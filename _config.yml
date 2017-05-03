@@ -70,7 +70,7 @@ kramdown:
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
 sidebar-about-description: "或许我是一个艺述家"
-sidebar-avatar: /img/avatar-wuhang.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
+sidebar-avatar: http://ww1.sinaimg.cn/large/006tNc79gy1ff8e2mlznxj30b40b4abg.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
 
