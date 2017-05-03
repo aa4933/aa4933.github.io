@@ -4,7 +4,7 @@ title:      "异常处理文章"
 subtitle:   "小技巧总结文章"
 date:       2016-07-08 12:00:00
 author:     "wulihh"
-header-img: "img/post-bg-2016-07_08.jpg"
+header-img: "http://ww2.sinaimg.cn/large/006tNc79gy1ff837f9szqj31gs0o6k4a.jpg"
 tags:
     - PHP
 ---

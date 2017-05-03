@@ -4,7 +4,7 @@ title:      "有趣的相亲题目"
 subtitle:   "知识集合"
 date:       2016-07-29 18:50:00
 author:     "wulihh"
-header-img: "img/post-bg-2016-07_09.jpg"
+header-img: "http://ww2.sinaimg.cn/large/006tNc79gy1ff837f9szqj31gs0o6k4a.jpg"
 tags:
     - PHP
 ---

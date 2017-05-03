@@ -4,7 +4,7 @@ title:      "linux+php小技巧"
 subtitle:   "小技巧总结文章"
 date:       2016-07-04 12:00:00
 author:     "wulihh"
-header-img: "img/post-bg-2016-07_05.jpg"
+header-img: "http://ww4.sinaimg.cn/large/006tNc79gy1ff836u3g8wj31gs0o6qs7.jpg"
 tags:
     - Linux
 ---

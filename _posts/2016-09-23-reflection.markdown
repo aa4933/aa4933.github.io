@@ -4,7 +4,7 @@ title:      "依赖注入/控制反转"
 subtitle:   "reflection"
 date:       2016-09-23 18:11:00
 author:     "wulihh"
-header-img: "img/post-bg-2016-07_09.jpg"
+header-img: "http://ww2.sinaimg.cn/large/006tNc79gy1ff837f9szqj31gs0o6k4a.jpg"
 tags:
     - PHP
 ---

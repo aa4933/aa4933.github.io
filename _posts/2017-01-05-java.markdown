@@ -4,7 +4,7 @@ title:      "java开发有感"
 subtitle:   "java"
 date:       2017-01-05 09:11:00
 author:     "wulihh"
-header-img: "img/post-bg-2016-07_09.jpg"
+header-img: "http://ww2.sinaimg.cn/large/006tNc79gy1ff837f9szqj31gs0o6k4a.jpg"
 tags:
     - java
 ---

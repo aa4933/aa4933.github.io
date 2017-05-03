@@ -4,7 +4,7 @@ title:      "最近经常用的特别好用的东西"
 subtitle:   "知识集合"
 date:       2016-08-24 18:50:00
 author:     "wulihh"
-header-img: "img/post-bg-2016-07_09.jpg"
+header-img: "http://ww1.sinaimg.cn/large/006tNc79gy1ff83culpxaj31gs0o644e.jpg"
 tags:
     - PHP
 ---

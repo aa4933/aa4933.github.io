@@ -4,7 +4,7 @@ title:      "所谓PHP的模块化思想"
 subtitle:   "reflection"
 date:       2016-10-28 18:11:00
 author:     "wulihh"
-header-img: "img/post-bg-2016-07_09.jpg"
+header-img: "http://ww2.sinaimg.cn/large/006tNc79gy1ff837f9szqj31gs0o6k4a.jpg"
 tags:
     - PHP
 ---
