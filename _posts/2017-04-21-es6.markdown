@@ -1,0 +1,76 @@
+---
+layout:     post
+title:      "react-native小坑"
+subtitle:   "sublime"
+date:       2017-04-21 10:52:00
+author:     "wuilly"
+header-img: "http://ww4.sinaimg.cn/large/006tNc79gy1ff82yrsjx0j31gs0o61kx.jpg"
+tags:
+    - react-native
+---
+> 'About react'
+
+
+### 关于遇到的一些很重要的小坑
+
+* react native this指向问题
+
+
+`子组件调用父组件`
+
+``` php
+父组件
+<Login afterLogin={this._afterLogin.bind(this)} />
+子组件
+this.props.afterLogin(data.data);
+```
+
+注意⚠️
+
+父组件调用自身方法的时候要使用bind修正当前的this，否则，this指向不会是父组件类
+
+导致没办法修改或者获得父组件的状态等错误
+
+* ios10x 系统权限调用的问题
+
+调用相册和地理位置或者相机会引起奔溃的问题
+
+我们需要修改plist以下是健对应的大概含义，请根据配置提示操作，勿直接拷贝
+
+``` php
+NSContactsUsageDescription -> 通讯录
+
+NSMicrophoneUsageDescription -> 麦克风
+
+NSPhotoLibraryUsageDescription -> 相册
+
+NSCameraUsageDescription -> 相机
+
+NSLocationAlwaysUsageDescription -> 地理位置
+
+NSLocationWhenInUseUsageDescription -> 地理位置
+
+Privacy - Bluetooth Peripheral Usage Description -> 蓝牙权限
+
+Privacy - Speech Recognition Usage Description -> 语音转文字权限
+
+Privacy - Calendars Usage Description -> 日历权限
+
+Privacy - Contacts Usage Description -> 通讯录权限
+```
+
+* 计时器问题
+
+使用`setInterval`方法制作计时器的时候
+
+无论是中断或者结束使用，必须clear计时器，否则会出现很多诡异的错误
+
+比如未init组件，却setState的问题
+
+
+
+
+
+
+
+

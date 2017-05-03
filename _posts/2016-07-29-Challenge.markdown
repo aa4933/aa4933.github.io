@@ -4,7 +4,7 @@ title:      "破解今日头条接口--详解TCP/UDP/HTTP协议"
 subtitle:   "知识集合+例子阐述"
 date:       2016-07-29 18:50:00
 author:     "wulihh"
-header-img: "img/post-bg-2016-07_09.jpg"
+header-img: "http://ww4.sinaimg.cn/large/006tNc79gy1ff82yrsjx0j31gs0o61kx.jpg"
 tags:
     - PHP
 ---
