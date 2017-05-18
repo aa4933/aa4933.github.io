@@ -21,6 +21,7 @@ So, just edit `_config.yml`, change my information, you can just do it！
 * 删除google统计功能
 * 剔除hux已存在的blog文件与图片
 * 剔除foot页脚大部分展示文件
+* 添加图床管理--而不是直接存储图片
 ## 支持
 
 - **如果你在使用中有任何问题，你可以通过qq:929433662联系我解决**
