@@ -1,0 +1,72 @@
+---
+layout:     post
+title:      "影响mysql性能的因素-系统篇"
+subtitle:   "Mysql"
+date:       2017-06-21 10:52:00
+author:     "wuilly"
+header-img: "http://ww3.sinaimg.cn/large/006tKfTcgy1fj5bti77aoj30sg0izwgf.jpg"
+tags:
+    - Mysql
+---
+> 'About system'
+
+### 服务器系统
+
+    一般我们选择就俩
+    windows
+    linux
+        linux-centos
+        linux-ubuntu
+    都是可以，建议centos，ubuntu记住别选桌面版了
+    
+#### centos系统优化
+
+* 内核参数配置（/etc/sysctl.conf） 
+
+参数 | 值 | 备注
+---|---
+net.core.somaxconn | 65535 | 最大监听数目
+net.core.netdev_max_backlog | 65535 | 最大链接数目
+net.ipv4.tcp_max_syn_backlog | 65535 | 可保存在队列中的最大数目
+net.ipv4.tcp_fin_timeout | 10 | 减少等待时间
+net.ipv4.tcp_tw_reuse | 1 | 为了加快tcp链接回收
+net.ipv4.tcp_tw_recycle | 1 | 加快tcp链接回收
+net.core.wmem_default | 87380 | 缓冲区接受与发送
+net.core.wmem_max | 16777216 | 缓冲区接受与发送
+net.core.rmem_default | 87380 | 缓冲区接受与发送
+net.core.rmem_max | 16777216 | 缓冲区接受与发送
+net.ipv4.tcp_keepalive_time | 120 | tcp发送时间间隔
+net.ipv4.tcp_keepalive_intvl | 30 | 反应延迟重发的时间间隔
+net.ipv4.tcp_keepalive_probes | 3 | 发送多少个keepalive消息
+kernel.shmmax | 物理内存-1 | 这个参数表示单个共享内存最大值，可以取最大物理内存-1byte
+vm.swappiness | 0 | 告诉linux，除非内存占满了，否则不能使用交换分区
+
+* 增加资源限制（/etc/secucity/limit.conf）
+
+参数 | 值 | 备注
+---|---
+* soft nofile | 65535 | 扩大打开文件数目，加到limit.conf末尾
+* hard nofile | 65535 | 扩大打开文件数目，加到limit.conf末尾
+
+* 磁盘调度算法（/sys/block/devname/queue/scheduler）
+
+算法  | 备注
+---|---
+cfg | 默认调度算法，可在一般桌面使用
+noop  | 电梯调度策略，用于闪存，RAM，嵌入式系统
+deadline  | 截止时间调度策略，用于数据库最佳策略
+anticipatory  | 预料io调度，用于文件系统
+
+- [x] 改变调度策略代码
+
+![](http://ww4.sinaimg.cn/large/006tNc79gy1fgf0pv8e6fj30wo056jsk.jpg)
+
+* 文件系统类型
+
+我相信熟悉装机的朋友一定知道，文件系统格式，windows常用的`FAT`与`NTFS`,还有用户不常用的linux常用的`EXT3`,`EXT4`,`XFS`据说`XFS`性能好
+
+- [ ] 常用的配置
+
+![](http://ww4.sinaimg.cn/large/006tKfTcgy1fgijogjggpj30vy0bi0ug.jpg)
+
+        
