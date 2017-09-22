@@ -1,0 +1,192 @@
+---
+layout:     post
+title:      "ssl-nginx配置"
+subtitle:   "Mysql"
+date:       2017-09-22 10:52:00
+author:     "wuilly"
+header-img: "http://ww4.sinaimg.cn/large/006tKfTcgy1fj6elgidgej30hm0b9jsd.jpg"
+tags:
+    - machine leaning
+---
+> 'About ssl'
+
+### 关于ssl-nginx的配置<可用于负载均衡>
+
+#### 1.检查服务器情况
+
+> 在开始配置以前，必须确定服务器状况是否正常，排除掉服务器本身存在的问题，最好先对服务器进行重启，如果出现重启失败，先解决服务器问题，再进行配置，以免问题越变越多，越变越大
+
+#### 2.申请证书
+
+[阿里云](https://help.aliyun.com/product/28533.html)
+
+[腾讯云](https://cloud.tencent.com/product/ssl)
+
+[amazon](https://aws.amazon.com/cn/certificate-manager/?sc_channel=PS&sc_campaign=acquisition_CN&sc_publisher=baidu&sc_category=pc&sc_medium=certificate_manager_nb&sc_content=ssl_apply_e&sc_detail=ssl%E8%AF%81%E4%B9%A6%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7&sc_segment=100023043&sc_matchtype=exact&sc_country=CN&s_kwcid=AL!4422!88!15893483945!!61051524240&ef_id=WQmKnAAAAGmcJufW:20170922084724:s)
+
+> 申请以后，下载证书，可以得到`.pem`与`.key`文件
+
+#### 3.准备工作
+
+确定服务器版本
+
+``` php
+1、cat /proc/version
+
+[root@S-CentOS home]# cat /proc/version
+Linux version 2.6.32-431.el6.x86_64 (mockbuild@c6b8.bsys.dev.centos.org) (gcc version 4.4.7 20120313 (Red Hat 4.4.7-4) (GCC) ) #1 SMP Fri Nov 22 03:15:09 UTC 2013
+
+2、uname -a
+
+[root@S-CentOS home]# uname -a
+
+Linux S-CentOS 2.6.32-431.el6.x86_64 #1 SMP Fri Nov 22 03:15:09 UTC 2013 x86_64 x86_64 x86_64 GNU/Linux
+```
+
+由于系统版本的不一样，很容易出现一些奇奇怪怪的问题
+
+比如在`centos7.2`以后
+
+> `nginx启动失败Failed to reload nginx.service: Unit not found.`
+
+[解决方案是添加服务单元配置](http://blog.csdn.net/wangjinbao5566/article/details/72938783)
+
+``` php
+nginx一些好用的命令
+
+ 启动：nginx安装目录地址 -c nginx配置文件地址
+
+/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+
+ 重启：前面 + -t
+/usr/local/nginx/sbin/nginx -t -c /usr/local/nginx/conf/nginx.conf
+ 测试配置文件是否正确（nginx根目录情况下）
+ ./nginx -t
+ 
+ 重载
+ ./nginx -s reload
+```
+
+
+#### 4.配置ssl
+
+找到`nginx.conf`配置文件
+> 注意：默认会载入`nginx.conf.default`
+
+
+添加配置
+``` php
+# HTTPS server
+    #
+    server {
+        listen       443 ssl;
+        server_name  localhost;
+
+        ssl_certificate     xxx.pem;
+        ssl_certificate_key  xxx.key;
+
+        ssl_session_cache    shared:SSL:1m;
+        ssl_session_timeout  5m;
+
+        ssl_ciphers  HIGH:!aNULL:!MD5;
+        ssl_prefer_server_ciphers  on;
+
+        location / {
+            proxy_redirect off;
+            proxy_set_header Host $http_host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_pass http://xxx;
+        }
+    }
+```
+
+> 注意 如果出现`nginx: [emerg] unknown directive "ssl_certificate"`
+说明你当前nginx没有编译进`ssl`模块，你需要重新编译nginx，见文章末尾
+
+#### 5.测试访问
+
+如果出现不能访问99%的可能是防火墙拦截，端口无法访问
+需要打开端口
+
+#### 6.更改80端口
+
+如果不需要http的访问方式，则可以在`nginx.conf`中80端口配置修改
+
+``` php
+server
+{
+    listen 80;
+    server_name xxx;
+    return 301 https://xxx$request_uri;
+    #return 301 https://$host$request_uri;
+    #(#host代表变量，用户host变量，也可以使用$server_name变量)
+    
+}
+
+或者使用重写规则
+server {
+    listen 80;
+    server_name xxx;
+    #rewrite ^(.*) https://$server_name$1 permanent;
+    rewrite ^(.*)$  https://$host$1 permanent;
+}
+```
+
+#### 编译nginx
+
+>一般情况我们对nginx编译以后，就不会做出修改，但是如果有时我们新增了一些需求，需要nginx有更强大的功能，我们就需要重新调整nginx，apache可以直接通过修改配置文件，进行重启调整，比较简单，nginx会稍微复杂一点
+
+- 1.了解自己的nginx是否编译了某个模块(nginx根目录)与nginx版本
+
+``` php
+./nginx -V
+
+nginx version: nginx/1.10.2
+built by gcc 4.8.5 20150623 (Red Hat 4.8.5-16) (GCC)
+built with OpenSSL 1.0.2k-fips  26 Jan 2017
+TLS SNI support enabled
+configure arguments: --prefix=/opt/nginx --sbin-path=/opt/nginx/nginx --conf-path=/opt/nginx/nginx.conf --pid-path=/opt/nginx/nginx.pid --with-pcre=/test/pcre-8.39 --with-http_stub_status_module --with-http_realip_module
+
+```
+
+- 2.比如上面，我们缺失了第三方`zlib`模块与系统自带的`ssl`模块
+
+- 3.下载对应的`nginx`版本与`zlib`包
+
+``` php
+注意：当前目录为/test/
+下载
+wget http://nginx.org/download/nginx-1.10.2.tar.gz
+wget http://www.zlib.net/zlib-1.2.3.tar.gz
+
+解压
+tar -zxvf nginx-1.10.2.tar.gz
+tar -zxvf zlib-1.2.3.tar.gz
+```
+
+- 4.重新配置文件，制作脚本
+
+``` php
+
+.cd nginx-1.10.2
+
+./configure --prefix=/opt/nginx --sbin-path=/opt/nginx/nginx --conf-path=/opt/nginx/nginx.conf --pid-path=/opt/nginx/nginx.pid --with-pcre=/test/pcre-8.39 --with-zlib=/test/zlib-1.2.11 --with-http_stub_status_module --with-http_realip_module --with-http_ssl_module
+
+以上第三方拓展包，地址必须正确，否则make出错，最后输出如下内容，表示configure OK了。
+
+make
+```
+
+> 出现`ngx_cache_purge/config was found`说明上面地址错了
+
+> 出现`pcre-8.32 configure: error: You need a C++ compiler for C++ support`说明你需要`yum install -y gcc gcc-c++`
+
+- 5.最后复制新的nginx覆盖旧的nginx
+
+``` php
+copy  ~/download/nginx-1.10.3/objs/nginx 到现有的/usr/local/nginx/sbin/nginx
+```
+
+- 6.重启
+

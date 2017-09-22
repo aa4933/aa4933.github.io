@@ -1,0 +1,134 @@
+---
+layout:     post
+title:      "影响mysql性能的因素-测试篇"
+subtitle:   "Mysql"
+date:       2017-04-21 10:52:00
+author:     "wuilly"
+header-img: "http://ww4.sinaimg.cn/large/006tKfTcgy1fj6elgidgej30hm0b9jsd.jpg"
+tags:
+    - Mysql
+---
+> 'About sysbench'
+
+### Mysql性能测量
+
+#### 前言
+
+> 在进行优化之前,我们需要进行一个非常重要的测试，叫做基准测试，请记住这个测试与压力测试不同
+
+#### 基准测试
+
+> 基准测试是测量和评估软件，某一个时刻的性能基准，以便于系统发生软硬件变化的时候重新进行基准测试，以评估对变化产生的性能影响
+
+> 建立mysql服务器性能基准线
+
+> 模拟比现在系统更高的负载，以找出系统的拓展瓶颈
+
+> 测试不同软件硬件操作系统配置是否正确
+
+> 证明新的硬件设备是否配置正确
+
+#### 对比压力测试
+
+> 基准测试一般直接简单，易于比较，用于评估服务器处理能力
+
+> 一般基准测试，不关注业务逻辑，所使用的查询和业务真实性可以和业务环境没有关系
+
+> 压力测试，使用真实的数据进行测试，获得真实系统的所承受的压力
+
+> 一般压力测试，使用的数据都是针对不同主题，所使用的数据和查询也是真实用到的
+
+#### 基准测试对象
+
+1. 对整个系统进行基准测试
+    ![](http://ww1.sinaimg.cn/large/006tKfTcgy1fj8q5q09haj30va0dcjwn.jpg)
+2. 对mysql服务器进行基准测试
+    ![](http://ww3.sinaimg.cn/large/006tKfTcgy1fj8q6bbkwmj30pi0b80vs.jpg)
+
+#### 基准测试常见指标
+
+- 单位时间内处理的事务数量(TPS)
+- 单位时间内所处理的查询数量（QPS）
+- 响应时间
+- 并发量：同时处理查询请求数量（并发量不等于连接数）
+
+#### 基准测试中容易忽略的问题
+
+- 使用生产环境数据时只使用了部分数据
+- 在多用户场景中，只做单用户的测试
+- 在单服务器上测试分布式应用
+- 反复执行同一查询
+
+
+### 基准测试工具
+
+> mysqlslap
+
+- [ ] 特点
+- 随着mysql安装而安装，灵活
+- 可以模拟服务器负载，并输出相关的统计信息
+- 可以指定，也可以自动生成查询语句
+
+
+
+- [ ] 参数说明
+
+```php
+--auto-generate-sql 由系统自动生成脚本进行测试
+--auto-generate-sql-add-autoincrement 在生成表中增加自增id
+--auto-generate-sql-load-type 指定测试中使用的查询类型
+--auto-generate-sql-write-number 指定初始化数据生成的数据量
+--concurrency 指定并发线程的数量
+--engine 指定测试表的存储引擎，可以用逗号分割多个存储引擎
+--no-drop 指定不清理测试数据
+--iterations 指定运行测试的数据
+--number-of-queries 指定每一个线程执行的查询数量
+--debug-info 指定输出额外内存及cpu统计信息
+--number-int-cols 指定测试表中包含int类型列的数量
+--number-char-cols 指定测试表中包含varchar类型的数量
+--create-schema 指定用于测试数据库的名字
+--query 用于指定自定义sql的脚本
+--only-print 把生成的脚本打印出来
+
+
+比如
+
+mysqlslap --concurrency=1,50,100,200 --iterations=3 --number-int-cols=5 --number-char-cols=5 --auto-generate-sql --auto-generate-sql-add-autoincrement --engine=myisam,innodb --number-of-queries=10 --create-schema=sbtest --only-print >1.sql
+
+后面是用于打印sql，可删去参数
+```
+
+> sysbench
+
+- [ ] 安装说明
+
+``` php
+https://github.com/akopytov/sysbench
+根据教程一步一步下来安装
+```
+
+- [ ] 参数说明
+
+``` php
+--test 用于指定要执行的测试类型，支持一下参数
+Fileio 文件系统I/O性能测试
+cpu cpu性能测试
+memory 内存性能测试
+Oltp 测试要指定具体的lua脚本
+lua脚本位于sysbench-xxx/sesbench/tests/db
+--mysql-db 用于指定执行基准测试的数据库名
+--mysql-table-engine 用于指定所使用的存储引擎
+--oltp-tables-count 执行测试的表的数量
+--oltp-table-size 指定每个表中的数据行数
+--num-threads 指定测试的并发线程数量
+--max-time 指定最大的测试时间
+--report-interval 指定间隔多长时间输出一次统计信息
+--mysql-user 指定执行测试的mysql用户
+--mysql-password 指定执行测试的mysql用户的密码
+prepare 用于准备测试数据
+run 用于实际进行测试
+cleanup 用于清理测试数据
+```
+
+
+
