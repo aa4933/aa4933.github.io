@@ -2,7 +2,7 @@
 layout:     post
 title:      "零基础教程--教你使用php-ml机器学习预测泰坦尼克号生还率案例"
 subtitle:   "php"
-date:       2017-11-03 10:52:00
+date:       2017-11-03 11:52:00
 author:     "wuilly"
 header-img: "http://ww4.sinaimg.cn/large/006tKfTcgy1fj6elgidgej30hm0b9jsd.jpg"
 tags:
