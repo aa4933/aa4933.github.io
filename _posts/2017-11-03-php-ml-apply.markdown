@@ -4,7 +4,7 @@ title:      "零基础教程--教你使用php-ml机器学习预测泰坦尼克�
 subtitle:   "php"
 date:       2017-11-03 11:52:00
 author:     "wuilly"
-header-img: "http://ww4.sinaimg.cn/large/006tKfTcgy1fj6elgidgej30hm0b9jsd.jpg"
+header-img: "http://ww4.sinaimg.cn/large/006tKfTcgy1fm4jrt0fllj30hs09b3yq.jpg"
 tags:
     - machine leaning
 ---

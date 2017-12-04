@@ -1,0 +1,150 @@
+---
+layout:     post
+title:      "DNMP架构使用与未来"
+subtitle:   "php"
+date:       2017-12-04 11:52:00
+author:     "wuilly"
+header-img: "http://ww3.sinaimg.cn/large/006tKfTcgy1fm4jtsm3jvj30qo0go75v.jpg"
+tags:
+    - php
+---
+> 'About docker'
+
+
+### 前言
+
+> 讲完了知乎live，心里的石头总算是落地了，第一次讲live，比较尴尬的是问问题的人比较少，都是我一人的自言自语，讲的内容很多，也很杂，不过已经基本上囊括了自学上大部分的路径与架构，很感谢参加的同学，希望有机会我们多多交流
+
+### 关于docker
+
+```
+第一次了解到docker是在一个同事的耳朵里，我一开始觉得这个玩意儿是啥，听说是一门新技术，我思考了一下，近几年新技术层出不穷，按照我对新技术的态度，一直都是，如果对我的开发有较快速的提升，我一般就会使用，恰恰好，docker就是这么一门提升速度的技术
+```
+
+### docker的架构
+
+![](http://ww2.sinaimg.cn/large/006tKfTcgy1fm4k7r8j22j318q0meju8.jpg)
+
+> 这是一张在搜集资料的时候看到的图，很经典
+
+### docker+nginx+mysql+php
+
+#### 镜像（类似于安装包的存在）
+
+``` php
+docker pull mysql:5.6
+docker pull php:7.0-fpm
+docker pull ngixn:1.10.3
+```
+
+> 加载完毕以后，可以使用`docker images`查看当前加载的镜像，也可以使用`docker rmi xxID`删除镜像
+
+
+#### 容器（类似于文件目录，但是每一个都是独立）
+
+> 容器的设定非常经典，把所有的模块当作封闭的系统来看待，只是用ip进行通讯，按照web的说法就是，高内聚低耦合，非常适合于快速开发
+
+``` php
+新建并启动容器
+docker run -d -p 3307:3306 -e MYSQL_ROOT_PASSWORD=xy123456 --name xy_mysql mysql:5.6
+
+docker run -d -v /var/nginx/www/html:/var/www/html -p 9000:9000 --link xy_mysql:mysql --name xy_phpfpm php:7.0-fpm 
+
+docker run -d -p 80:80 --name xy_nginx 
+-v /var/nginx/www/html:/var/www/html --link xy_phpfpm:phpfpm 
+ -v /etc/docker/myNginx/nginx.conf:/etc/nginx/nginx.conf:ro   
+  -v /etc/docker/myNginx/conf.d:/etc/nginx/conf.d 
+
+--name xy_nginx nginx:1.10.3
+
+记住，顺序不能乱，因为链接是一块接另一块，坏了其中一块，则无法正常运行
+
+```
+
+注意
+---
+- 第一个“-v”，是项目位置，把项目放到挂载到的目录下即可；
+- 第二个“-v”，是挂载的主配置文件"nginx.conf"，注意"nginx.conf"文件内有一行"include /etc/nginx/conf.d/*.conf;"，这个include指向了子配置文件的路径，此处注意include后所跟的路径一定不要出错。
+- 第三个“-v”，把docker内子配置文件的路径也挂载了出来，注意要与（2）中include指向路径一致
+- 重点强调一下，nginx.conf是挂载了一个文件（docker是不推荐这样用的），conf.d挂载的是一个目录
+- 执行最后一个run的时候，本地目录必须存在已经配置好的配置文件，否则运行nginx会失败
+---
+
+
+> 参数说明
+
+* -d 让容器在后台运行 
+* -p 添加主机到容器的端口映射 
+* -v 添加目录映射,这里最好nginx容器的根目录最好写成和php容器中根目录一样。但是不一点非要一模一样,如果不一样在配置nginx的时候需要注意 
+* –name 容器的名字 
+* –link 与另外一个容器建立起联系
+
+
+
+
+#### 容器基本操作
+
+``` php 
+docker stop xxxID
+docker start xxxID
+docker restart xxxID
+docker ps -a 查看所有运行的容器
+docker exec -ti xxID/Name /bin/bash 进入容器（系统内核为linux） 
+```
+
+#### 特殊操作
+
+``` php
+docker-php-ext-install pdo_mysql 安装php模块
+docker inspect （id／name） | grep "IPAddress" 查看某一个id的ip
+docker exec -it （id/name） nginx -s reload 重新生效配置
+```
+
+### 后记
+
+> docker作为一门新技术，很好的改善了，传统开发过程中，每个人的环境都有区别，导致同一个项目跑不同的电脑就是很烦人，往往很容易出现崩盘的情况，测试环境和线上环境的差距，导致很难同步，但是有了docker以后，一切都变得轻松清爽了，这是一门非常值得掌握的技术，至少它能立竿见影加快团队的开发，这是非常值得普及的一门技术
+
+#### nginx中`default.conf`配置
+
+``` php
+server {  
+    listen       80;  
+    server_name  localhost;  
+  
+ 
+    error_page   500 502 503 504  /50x.html;  
+    location = /50x.html {  
+        root   /usr/share/nginx/html;  
+    }  
+  
+    # proxy the PHP scripts to Apache listening on 127.0.0.1:80  
+    #  
+    #location ~ \.php$ {  
+    #    proxy_pass   http://127.0.0.1;  
+    #}  
+  
+    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000  
+      
+    #location ~ \.php$ {  
+    #     root           /var/www/html;  
+    #     fastcgi_pass   172.17.0.3:9000;  
+    #     fastcgi_index  index.php;  
+    #     fastcgi_param  SCRIPT_FILENAME $document_root$fastcdi_script_name;
+    #     include        fastcgi_params;  
+    # }
+  
+    location ~ \.php$ {
+       fastcgi_pass   172.17.0.3:9000;
+       fastcgi_index  index.php;
+       fastcgi_param  SCRIPT_FILENAME  /var/www/html$fastcgi_script_name;
+       fastcgi_param  SCRIPT_NAME      $fastcgi_script_name;
+       include        fastcgi_params;
+    }
+    # deny access to .htaccess files, if Apache's document root  
+    # concurs with nginx's one  
+    #  
+    #location ~ /\.ht {  
+    #    deny  all;  
+    #}  
+}  
+```
