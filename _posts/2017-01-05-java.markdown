@@ -6,7 +6,7 @@ date:       2017-01-05 09:11:00
 author:     "wulihh"
 header-img: "http://ww2.sinaimg.cn/large/006tNc79gy1ff837f9szqj31gs0o6k4a.jpg"
 tags:
-    - java
+    - Java
 ---
 > 'About java'
 

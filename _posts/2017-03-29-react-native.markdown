@@ -6,7 +6,7 @@ date:       2017-03-30 16:35:00
 author:     "wuilly"
 header-img: "http://ww2.sinaimg.cn/large/006tNc79gy1ff837f9szqj31gs0o6k4a.jpg"
 tags:
-    - react-native
+    - ReactNative
 ---
 > 'About react'
 

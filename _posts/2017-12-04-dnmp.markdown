@@ -6,7 +6,7 @@ date:       2017-12-04 11:52:00
 author:     "wuilly"
 header-img: "http://ww3.sinaimg.cn/large/006tKfTcgy1fm4jtsm3jvj30qo0go75v.jpg"
 tags:
-    - php
+    - Docker
 ---
 > 'About docker'
 
@@ -120,6 +120,12 @@ docker-php-ext-install pdo_mysql 安装php模块
 docker inspect （id／name） | grep "IPAddress" 查看某一个id的ip
 docker exec -it （id/name） nginx -s reload 重新生效配置
 ```
+
+#### 一些需要注意的点
+
+> docker容器之间都是独立的ip互相连接用的是各自的ip，但是它们对于宿主机而言，ip地址又是相同的，因为他们通过相同的方式映射不同端口给宿主机，所以宿主机连接的时候使用的ip是相同的回送地址。
+
+- [x] 这个问题产生了一些项目上的问题，导致redis，mysql服务拒绝，花了两天才弄清楚
 
 ### 后记
 

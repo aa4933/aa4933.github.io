@@ -6,7 +6,7 @@ date:       2017-04-21 10:52:00
 author:     "wuilly"
 header-img: "http://ww1.sinaimg.cn/large/006tKfTcgy1fj5bviyytkj30qo0gojsu.jpg"
 tags:
-    - Mysql
+    - MysqlLearning
 ---
 > 'About parameter'
 

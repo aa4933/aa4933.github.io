@@ -6,7 +6,7 @@ date:       2017-06-21 10:52:00
 author:     "wuilly"
 header-img: "http://ww3.sinaimg.cn/large/006tKfTcgy1fj5bti77aoj30sg0izwgf.jpg"
 tags:
-    - Mysql
+    - MysqlLearning
 ---
 > 'About system'
 

@@ -6,7 +6,7 @@ date:       2017-05-21 10:52:00
 author:     "wuilly"
 header-img: "http://ww1.sinaimg.cn/large/006tKfTcgy1fj5bs20tvxj30dw0960td.jpg"
 tags:
-    - Mysql
+    - MysqlLearning
 ---
 > 'About hardware'
 

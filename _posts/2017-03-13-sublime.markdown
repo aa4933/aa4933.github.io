@@ -6,7 +6,7 @@ date:       2017-03-13 16:32:00
 author:     "wuilly"
 header-img: "http://ww1.sinaimg.cn/large/006tNc79gy1ff835ym4dbj31gs0o6e81.jpg"
 tags:
-    - sublime
+    - Sublime
 ---
 > 'About sublime'
 

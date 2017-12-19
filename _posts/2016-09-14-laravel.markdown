@@ -6,7 +6,7 @@ date:       2016-09-14 15:50:00
 author:     "wulihh"
 header-img: "http://ww2.sinaimg.cn/large/006tNc79gy1ff837f9szqj31gs0o6k4a.jpg"
 tags:
-    - PHP
+    - Laravel
 ---
 > 'Smile, breathe, and go slowly. - Thich Nhat Hanh'
 
@@ -69,4 +69,63 @@ Laravel作为一个php框架，推广水平非常好
 
 实际使用是，能更快的上手，更规范的使用，和yii2有异曲同工之妙
 
-未完待续....
+#### artisan 常用命令总结
+
+``` php
+
+php artisan make:controller Photo/PhotoController（生成控制器）
+
+php artisan make:model Entitys/User（生成模型与实体）
+
+php artisan make:migration create_users_table（生成数据生成类）
+
+php artisan make:request StoreBlogPost(生成校验请求类)
+
+php artisan make:seeder UsersTableSeeder（生成数据填充种子）
+
+php artisan make:middleware CheckAge （生成中间件
+
+php artisan make:provider RiakServiceProvider（生成服务器提供：使用较少，一般在app服务器提供者中数字阐述意义模型渲染）
+
+```
+
+### 创建属性让所有模版引擎共用的变量
+
+在app/Providers/AppServicesProvider.php添加方法
+
+``` php
+ /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        \View::share([
+            'user_role'=>[
+                '1'=>'普通员工',
+                '2'=>'人事管理员工',
+                '3'=>'老板股东',
+            ]
+        ]);
+    }
+```
+
+### 一些问题解决方案
+
+---
+
+
+[更换Laravel语言包](http://www.jianshu.com/p/12cf798d27bf)
+
+---
+
+
+[错误信息表单提示](http://blog.csdn.net/u011020900/article/details/52368332)
+
+---
+
+
+> 如果你需要同时写出模型，数据库，填充，命令行会有区别
+
+[填充数据设计方法](https://segmentfault.com/a/1190000005085328)

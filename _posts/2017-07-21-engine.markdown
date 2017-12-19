@@ -6,7 +6,7 @@ date:       2017-07-21 10:52:00
 author:     "wuilly"
 header-img: "http://ww3.sinaimg.cn/large/006tKfTcgy1fj5bumqe45j30dc08caad.jpg"
 tags:
-    - Mysql
+    - MysqlLearning
 ---
 > 'About engine'
 

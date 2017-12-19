@@ -6,7 +6,7 @@ date:       2016-07-29 18:50:00
 author:     "wulihh"
 header-img: "http://ww4.sinaimg.cn/large/006tNc79gy1ff82yrsjx0j31gs0o61kx.jpg"
 tags:
-    - PHP
+    - Life
 ---
 > “challenge”
 

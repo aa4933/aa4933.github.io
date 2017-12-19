@@ -6,7 +6,7 @@ date:       2017-11-03 11:52:00
 author:     "wuilly"
 header-img: "http://ww4.sinaimg.cn/large/006tKfTcgy1fm4jrt0fllj30hs09b3yq.jpg"
 tags:
-    - machine leaning
+    - MachineLeaning
 ---
 > 'About php-ml'
 
