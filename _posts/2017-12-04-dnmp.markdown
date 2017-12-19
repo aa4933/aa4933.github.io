@@ -35,6 +35,7 @@ tags:
 docker pull mysql:5.6
 docker pull php:7.0-fpm
 docker pull ngixn:1.10.3
+docker pull redis:3.2
 ```
 
 > 加载完毕以后，可以使用`docker images`查看当前加载的镜像，也可以使用`docker rmi xxID`删除镜像
@@ -59,6 +60,12 @@ docker run -d -p 80:80 --name xy_nginx
 
 记住，顺序不能乱，因为链接是一块接另一块，坏了其中一块，则无法正常运行
 
+
+如果需要redis的话
+docker run -p 6378:6379 --name xy_redis -v $PWD/data:/data  -d redis:3.2 redis-server --appendonly yes
+
+如果需要redis配置的话，需要先在当前目录创建编写配置文件再启动
+docker run -p 6699:6379 --name myredis -v $PWD/redis.conf:/etc/redis/redis.conf -v $PWD/data:/data -d redis:3.2 redis-server /etc/redis/redis.conf --appendonly yes
 ```
 
 注意
@@ -79,8 +86,18 @@ docker run -d -p 80:80 --name xy_nginx
 * –name 容器的名字 
 * –link 与另外一个容器建立起联系
 
-
-
+``` php
+命令说明：
+　　--name myredis : 指定容器名称，这个最好加上，不然在看docker进程的时候会很尴尬。
+　　-p 6699:6379 ： 端口映射，默认redis启动的是6379，至于外部端口，随便玩吧，不冲突就行。
+　　-v $PWD/redis.conf:/etc/redis/redis.conf ： 将主机中当前目录下的redis.conf配置文件映射。
+　　-v $PWD/data:/data -d redis:3.2 ： 将主机中当前目录下的data挂载到容器的/data
+　　--redis-server --appendonly yes :在容器执行redis-server启动命令，并打开redis持久化配置\
+　　注意事项：
+　　　　如果不需要指定配置，-v $PWD/redis.conf:/etc/redis/redis.conf 可以不用 ，
+　　　　redis-server 后面的那段 /etc/redis/redis.conf 也可以不用。
+　　　　主要我是用来给redis设置了密码
+```
 
 #### 容器基本操作
 
@@ -89,7 +106,11 @@ docker stop xxxID
 docker start xxxID
 docker restart xxxID
 docker ps -a 查看所有运行的容器
-docker exec -ti xxID/Name /bin/bash 进入容器（系统内核为linux） 
+docker exec -ti xxID/Name /bin/bash 进入容器（系统内核为linux）
+直接连接到redis容器中，直接上命令：
+　　　　# docker inspect 名字 | grep IP
+---先查询到myredis容器的ip地址。
+　　　　# docker run -it redis:3.2 redis-cli -h 192.168.42.32 ---连接到redis容器。然后就进入redis命令行了。
 ```
 
 #### 特殊操作

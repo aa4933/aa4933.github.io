@@ -10,6 +10,10 @@ tags:
 ---
 > 'About more'
 
+# 优化金字塔
+
+![](http://ww2.sinaimg.cn/large/006tKfTcgy1fm4uy56kqoj30vi0gawga.jpg)
+
 ## 前言铺垫
 
 基本的基础
