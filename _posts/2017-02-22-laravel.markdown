@@ -186,4 +186,24 @@ Route::group(['middleware' => ['web']], function () {})
 我就是陷入了就觉得自己的想法不对的漩涡中，实际上其实是另一个问题
 
 
+### 关于5.2版本以后的更新时间设计问题
+
+> 场景：使用5.2以后的版本，会出现更新的时候，同时更新创建时间
+
+> 解决方案：（未测试）
+
+試試看建立 migration 時
+
+``` php
+
+$table->timestamp('created_at')->useCurrent();
+$table->timestamp('updated_at')->useCurrent();
+
+或是
+
+$table->nullableTimestamps();
+
+```
+
+
 

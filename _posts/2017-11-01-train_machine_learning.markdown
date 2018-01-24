@@ -6,7 +6,7 @@ date:       2017-10-22 10:52:00
 author:     "wuilly"
 header-img: "http://ww4.sinaimg.cn/large/006tKfTcgy1fj6elgidgej30hm0b9jsd.jpg"
 tags:
-    - MachineLeaning
+    - MachineLearning
 ---
 > 'About error'
 
