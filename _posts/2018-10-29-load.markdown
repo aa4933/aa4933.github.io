@@ -1,0 +1,59 @@
+---
+layout:     post
+title:      "Linux负载"
+subtitle:   "linux"
+date:       2018-10-29 15:28:00
+author:     "wuilly"
+header-img: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1516777063737&di=a86a9881000f70190aaffe6953eec4f3&imgtype=0&src=http%3A%2F%2Fimg.article.pchome.net%2F00%2F28%2F07%2F58%2Fpic_lib%2Fwm%2F1920_1200car_1002.jpg"
+tags:
+    - Linux
+---
+> 'About Linux'
+
+### 关于负载
+
+
+![image](https://wx4.sinaimg.cn/large/005N5norgy1fwp2puel7ij30ev09f74n.jpg)
+
+> 看到阿里云出现的负载，曾经一度以为是1秒钟，5秒钟，15秒钟的加载次数，后面才知道，负载均衡的来由就是这个
+
+
+``` php
+在Linux shell下，有很多命令可以看到Load Average，例如：
+
+root@Slyar.com:~# uptime
+12:49:10 up 182 days, 16:54, 2 users, load average: 0.08, 0.04, 0.01
+
+root@Slyar.com:~# w
+12:49:18 up 182 days, 16:54, 2 users, load average: 0.11, 0.07, 0.01
+
+root@Slyar.com:~# top
+top - 12:50:28 up 182 days, 16:55, 2 users, load average: 0.02, 0.05, 0.00
+
+root@Slyar.com:~# cat /proc/loadavg
+0.10 0.06 0.01 1/72 29632
+
+```
+
+> 这3个数字的含义：分别表示系统在过去1分钟、5分钟、15分钟内运行进程队列中的平均进程数量。
+
+> 最后一个命令相对更加准确，后面的1个分数，分母表示系统进程总数，分子表示正在运行的进程数；最后一个数字表示最近运行的进程ID.
+
+![image](https://ws3.sinaimg.cn/large/005N5norgy1fwp2w5q1pkj30bs053748.jpg)
+
+![image](https://wx3.sinaimg.cn/large/005N5norgy1fwp2x3hw4rj30ds021744.jpg)
+
+> 这个图很形象的说明了负载多的情况下会造成什么影响，大范围的拥堵与系统的异常
+
+
+``` php
+grep 'model name' /proc/cpuinfo | wc -l
+这个命令可以快速查看核心数量
+```
+
+> 一般来说：单核负载在0.7以下是安全的，超过0.7就需要进行优化了。
+
+
+### 关于优化
+
+> 我个人暂时没有找到线上服务器出现如此大负载的原因，因为服务器的历史创建者并不是我，在服务器中藏了很多东西，我并不了解，故不能简单的对服务做修改处理，等待后续的重新购买服务器重新搭建，再来获取一个优化的结论
