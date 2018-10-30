@@ -1,0 +1,57 @@
+---
+layout:     post
+title:      "队列与钩子"
+subtitle:   "hook"
+date:       2018-10-29 15:28:00
+author:     "wuilly"
+header-img: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1516777063737&di=a86a9881000f70190aaffe6953eec4f3&imgtype=0&src=http%3A%2F%2Fimg.article.pchome.net%2F00%2F28%2F07%2F58%2Fpic_lib%2Fwm%2F1920_1200car_1002.jpg"
+tags:
+    - PHP
+---
+> 'About PHP'
+
+### 挂载问题
+
+
+> 场景：需要挂载一个nfs，来达到后续的负载均衡项目共享
+
+``` php
+[root@iZ2zea10lafrgegmw69hbdZ ~]# sudo mount -t nfs -o vers=4 1925848b8c-fmf35.cn-beijing.nas.aliyuncs.com:/ /mnt
+mount: wrong fs type, bad option, bad superblock on 1925848b8c-fmf35.cn-beijing.nas.aliyuncs.com:/,
+       missing codepage or helper program, or other error
+       (for several filesystems (e.g. nfs, cifs) you might
+       need a /sbin/mount.<type> helper program)
+
+       In some cases useful info is found in syslog - try
+       dmesg | tail or so.
+
+```
+
+> 解决方案：yum install nfs-utils
+
+### 关于php队列queue与hook钩子监听的使用场景
+
+
+> 实际开发中发现系统运行了一个脚本， 
+
+``` php
+php think queue:work --daemon，
+```
+
+> google了一下才知道这个原来是tp的队列方法，运行以后，会产生一个一直存在的队列，可以服务代码
+
+> 有点类似于放了一个一直运行的服务方法，每次需要的时候push到队列里面，直到运行成功为止
+
+> 使用场景：当某一个函数，或者类执行时间无法清晰获知，或者是极长的运行时间，不能让用户等待的场景
+
+---
+
+> 同时项目里面存在了一个 
+
+``` php
+$check = Hook::listen('voip_validate', $this->rules)[0];
+```
+
+> 这个是钩子方法，我个人理解的使用场景是，当需要对接下去的操作进行某一些监听或者是函数行为的时候，就必须要使用到钩子监听，比如你想打印接下来执行的sql语句
+
+> 至于网上很多的阐述，是对函数做出监听，以插件的行为，不影响主函数的概念，我个人是不认为有意义的，不影响主函数，用类调方法即可，不一定要使用钩子来复杂整套逻辑
