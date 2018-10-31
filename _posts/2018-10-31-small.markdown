@@ -1,0 +1,39 @@
+---
+layout:     post
+title:      "特性引发的问题"
+subtitle:   "hook"
+date:       2018-10-31 15:28:00
+author:     "wuilly"
+header-img: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1516777063737&di=a86a9881000f70190aaffe6953eec4f3&imgtype=0&src=http%3A%2F%2Fimg.article.pchome.net%2F00%2F28%2F07%2F58%2Fpic_lib%2Fwm%2F1920_1200car_1002.jpg"
+tags:
+    - PHP
+---
+> 'About PHP'
+
+### thinkphp5
+
+> 搭建tp5的时候，出现了一个非常奇怪的问题，服务器一直500
+
+> 但是就是没有办法发现对应的问题，直到后来打开了nginx的error日志，出现了
+
+``` php
+\nFatal error: Arrays are not allowed in class constants in /mnt/putao/api/xin.36qq.com/vendor/mrmiao/think-interface-encryption/src/RSACrypt.php on line 54
+```
+
+> 找到了对应的行数
+
+``` php
+ const exception_response = [
+        'miss_config'=>['code'=>100,'message'=>'RSA config missing'],//缺少配置文件
+        'request_parse_fail'=>['code'=>101,'message'=>'Request param parsing exception'],//请求参数解析失败
+        'request_method_error'=>['code'=>102,'message'=>'Request method error'],//请求方式错误
+        'request_param_num_error'=>['code'=>103,'message'=>'Number of request parameters and rules inconsistent'],//请求参数数量与规则不符
+        'request_param_error'=>['code'=>104,'message'=>'Error params:'],//错误的请求参数
+    ];
+```
+
+> 后来找了很多的问答，发现这个特性常量定义，对于数组而言，php>=5.6才会有这个特性，否则无法使用
+
+> 虽然版本是5.6但是hhvm是不支持的，所以我用了土方法
+
+> 把常量改成了变量，用this去调用，也算是解决了这个问题
