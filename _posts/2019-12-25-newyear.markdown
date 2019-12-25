@@ -1,0 +1,26 @@
+---
+layout:     post
+title:      "又是新年"
+subtitle:   "year"
+date:       2019-12-25 15:27:00
+author:     "wuilly"
+header-img: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1516777063737&di=a86a9881000f70190aaffe6953eec4f3&imgtype=0&src=http%3A%2F%2Fimg.article.pchome.net%2F00%2F28%2F07%2F58%2Fpic_lib%2Fwm%2F1920_1200car_1002.jpg"
+tags:
+    - laravel
+---
+> 'About laravel'
+
+
+### 太久了
+
+今年发生了很多事情
+
+从年初的工作不顺利，到后面的转机，再到后面的大战，最后终于结尾了
+
+我也不知道以后的方向会去往何方了
+
+在2019年12月25日11点58分写下
+
+吃饭去了
+
+今年2072大丰收，阿娇小招小贱都有收获，明年希望更好
